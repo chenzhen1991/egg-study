@@ -1,3 +1,7 @@
 {
-  "extends": "eslint-config-egg"
+  "extends": "eslint-config-egg",
+  // 不使用分号 不报错
+  "rules":{
+    "semi": ["error", "never"]
+  }
 }
