@@ -21,7 +21,7 @@ module.exports = ({ app }) => {
       await next()
     } catch (err) {
       console.log(err)
-      if (err.name === 'TokenExpiredError') {
+      if (err.name == 'TokenExpiredError') {
         ctx.body = {
           code: -666,
           message: '登录过期了',
