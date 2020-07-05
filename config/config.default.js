@@ -22,7 +22,7 @@ module.exports = appInfo => {
     whitelist: () => true,
   }
   // 上传文件设置 C:\Users\Administrator\WebstormProjects\egg-study\config\config.default.js
-  config.UPLOAD_DIR = path.resolve(__dirname, '..', '/app/public')
+  config.UPLOAD_DIR = path.resolve(__dirname, '../app/public')
 
   // add your middleware config here
   config.middleware = []
@@ -43,7 +43,9 @@ module.exports = appInfo => {
     mongoose: {
       client: {
         url: 'mongodb://127.0.0.1:27017/zzzhub',
-        options: {},
+        options: {
+          useUnifiedTopology:true
+        },
       },
     },
     jwt: {

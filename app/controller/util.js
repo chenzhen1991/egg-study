@@ -39,6 +39,10 @@ class UtilController extends BaseController {
   }
   async uploadfile() {
     // /public/hash/(hash+index)
+    // 报错
+    if(Math.random() > 0.5){
+      return this.ctx.status = 500
+    }
     const { ctx } = this
     const file = ctx.request.files[0]
     const { hash, name } = ctx.request.body
@@ -58,6 +62,44 @@ class UtilController extends BaseController {
     // this.success = {
     //   url: 'www',
     // }
+  }
+  async mergefile() {
+    const { ext, size, hash } = this.ctx.request.body
+    const filePath = path.resolve(this.config.UPLOAD_DIR, `${hash}.${ext}`)
+    console.log(1111, filePath)
+    await this.ctx.service.tools.mergeFile(filePath, hash, size)
+    this.success({
+      url: `/public/${hash}.${ext}`,
+    })
+    // this.success({
+    //     url: `你好`,
+    // })
+  }
+  async checkfile(){
+    const { ctx } = this
+    const { ext, hash } = ctx.request.body
+    const filePath = path.resolve(this.config.UPLOAD_DIR, `${hash}.${ext}`)
+
+    let uploaded = false
+    let uploadedList = []
+    console.log('fse', path.resolve(this.config.UPLOAD_DIR, hash))
+    if(fse.existsSync(filePath)){
+      // 文件存在
+      uploaded = true
+    }else{
+      uploadedList = await this.getUploadedList(path.resolve(this.config.UPLOAD_DIR, hash))
+    }
+    console.log('uploadedList', uploadedList)
+    this.success({
+      uploaded,
+      uploadedList
+    })
+  }
+  async getUploadedList(dirPath) {
+    console.log('fse.readdir',fse.readdir(dirPath))
+    return fse.existsSync(dirPath)
+            ? (await fse.readdir(dirPath).filter(name => name[0] !== '.'))
+            : []
   }
 }
 
